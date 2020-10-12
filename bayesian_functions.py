@@ -36,14 +36,12 @@ def run_pymultinest(prior_range, model, GL_min, GL_max, n_params, directory,
   if not os.path.isdir(directory):
     os.makedirs(directory)
 
-  g_s_cut, Bbar_s_cut, L_s_cut, samples_cut, m_s_cut = cut(GL_min, GL_max, g_s, Bbar_s, L_s, samples, m_s)
-
-  cov_matrix, different_ensemble = cov_matrix_calc(g_s_cut, L_s_cut, m_s_cut, samples_cut)
+  cov_matrix, different_ensemble = cov_matrix_calc(g_s, L_s, m_s, samples)
 
   cov_1_2 = numpy.linalg.cholesky(cov_matrix)
   cov_inv = numpy.linalg.inv(cov_1_2)
 
-  res_function = make_res_function(N, m_s_cut, g_s_cut, L_s_cut, Bbar_s_cut)
+  res_function = make_res_function(N, m_s, g_s, L_s, Bbar_s)
 
   likelihood_function = likelihood_maker(n_params, cov_inv, model, res_function)
 
