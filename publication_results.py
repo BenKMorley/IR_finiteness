@@ -273,12 +273,13 @@ def part4():
   model2 = model2_2a
   param_names = ["alpha1", "alpha2", "f0", "f1", "lambduh", "nu"]
 
-  alpha_range = [-0.1, 0.1]
+  alpha_range1 = [-0.1, 0.1]
+  alpha_range2 = [-0.1, 0.1]
   f0_range = [0, 1]
   f1_range = [-2, 2]
   lambduh_range = [0, 2]
   nu_range = [0, 2]
-  prior_range = [alpha_range, f0_range, f1_range, lambduh_range, nu_range]
+  prior_range = [alpha_range1, alpha_range2, f0_range, f1_range, lambduh_range, nu_range]
   n_params = len(prior_range)
 
   Bayes_factors4 = numpy.zeros(len(GL_mins))
