@@ -1,7 +1,7 @@
 from frequentist_run import run_frequentist_analysis
 from model_definitions import *
 from tqdm import tqdm
-from bayesian_run import *
+from bayesian_functions import *
 
 
 ## Part I : Producing p-values for figure 4.
@@ -293,6 +293,8 @@ def part4():
                               return_analysis_small=True)
 
     Bayes_factors4[i] = analysis1[0] - analysis2[0]
+
+  return Bayes_factors2, Bayes_factors4
 
 
 part4()
