@@ -215,6 +215,9 @@ def part4():
   # Use this to label different runs if you edit something
   tag = ""
 
+  # Prior Name: To differentiate results which use different priors
+  prior_name = "A"
+
   # N = 2
   N = 2
   Bbar_1 = "0.520"
