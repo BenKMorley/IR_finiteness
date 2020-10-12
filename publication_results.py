@@ -212,6 +212,9 @@ def part4():
   # How many sample points to use in the MULTINEST algorithm
   points = 100
 
+  # Use this to label different runs if you edit something
+  tag = ""
+
   # N = 2
   N = 2
   Bbar_1 = "0.520"
