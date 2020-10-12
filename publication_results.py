@@ -312,4 +312,4 @@ def part4():
   return Bayes_factors2, Bayes_factors4
 
 
-part4()
+Bayes_factors2, Bayes_factors4 = part4()
