@@ -2,6 +2,7 @@ from model_definitions import *
 import pymultinest
 import os
 import pickle
+import json
 from multiprocessing import Pool, current_process
 
 
