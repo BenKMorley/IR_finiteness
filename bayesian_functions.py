@@ -1,4 +1,4 @@
-from model_functions import *
+from model_definitions import *
 import pymultinest
 import os
 import pickle
