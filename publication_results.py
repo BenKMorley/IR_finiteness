@@ -206,6 +206,9 @@ def part4():
   GL_mins = numpy.array([0.8, 1.6, 2.4, 3.2, 4, 4.8, 6.4, 8, 9.6, 12.8, 14.4, 16, 19.2, 24, 25.6, 28.8, 32])
   GL_max = 76.8
 
+  # Where the output samples will be saved
+  directory = "MULTINEST_samples"
+
   # N = 2
   N = 2
   Bbar_1 = "0.520"
