@@ -210,7 +210,7 @@ def part4():
   directory = "MULTINEST_samples"
 
   # How many sample points to use in the MULTINEST algorithm
-  points = 100
+  points = 1000
 
   # Use this to label different runs if you edit something
   tag = ""
