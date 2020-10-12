@@ -222,6 +222,7 @@ def part4():
   lambduh_range = [0, 2]
   nu_range = [0, 2]
   prior_range = [alpha_range, f0_range, f1_range, lambduh_range, nu_range]
+  n_params = len(prior_range)
 
   Bayes_factors2 = numpy.zeros(len(GL_mins))
 
@@ -266,6 +267,7 @@ def part4():
   lambduh_range = [0, 2]
   nu_range = [0, 2]
   prior_range = [alpha_range, f0_range, f1_range, lambduh_range, nu_range]
+  n_params = len(prior_range)
 
   Bayes_factors4 = numpy.zeros(len(GL_mins))
 
