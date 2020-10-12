@@ -209,6 +209,9 @@ def part4():
   # Where the output samples will be saved
   directory = "MULTINEST_samples"
 
+  # How many sample points to use in the MULTINEST algorithm
+  points = 100
+
   # N = 2
   N = 2
   Bbar_1 = "0.520"
