@@ -239,7 +239,7 @@ def part4():
   Bayes_factors2 = numpy.zeros(len(GL_mins))
 
   for i, GL_min in enumerate(GL_mins):
-    samples, g_s, L_s, Bbar_s, m_s = load_in_data(f'input_data/Ben_N={N}_B={Bbar_1}_B={Bbar_2}.pcl')
+    samples, g_s, L_s, Bbar_s, m_s = load_in_data(f'input_data/Ben_N={N}_B={Bbar_1}_B={Bbar_2}.pcl', GL_min=GL_min, GL_max=GL_max)
 
     dof = g_s.shape[0] - n_params
 
@@ -285,7 +285,7 @@ def part4():
   Bayes_factors4 = numpy.zeros(len(GL_mins))
 
   for i, GL_min in enumerate(GL_mins):
-    samples, g_s, L_s, Bbar_s, m_s = load_in_data(f'input_data/Ben_N={N}_B={Bbar_1}_B={Bbar_2}.pcl')
+    samples, g_s, L_s, Bbar_s, m_s = load_in_data(f'input_data/Ben_N={N}_B={Bbar_1}_B={Bbar_2}.pcl', GL_min=GL_min, GL_max=GL_max)
 
     dof = g_s.shape[0] - n_params
 
