@@ -1,4 +1,4 @@
-from chisq_functions import *
+from model_functions import *
 import pymultinest
 import os
 import pickle
