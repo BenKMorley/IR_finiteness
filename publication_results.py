@@ -218,6 +218,9 @@ def part4():
   # Prior Name: To differentiate results which use different priors
   prior_name = "A"
 
+  # For reproducability
+  seed = 3475642
+
   # N = 2
   N = 2
   Bbar_1 = "0.520"
@@ -253,13 +256,13 @@ def part4():
                               N, g_s, Bbar_s, L_s, samples, m_s, param_names,
                               n_live_points=points, sampling_efficiency=0.3, clean_files=True,
                               tag=tag, prior_name=prior_name, keep_GLmax=False,
-                              return_analysis_small=True)
+                              return_analysis_small=True, seed=seed)
 
     analysis2, best_fit2 = run_pymultinest(prior_range, model2, GL_min, GL_max, n_params, directory,
                               N, g_s, Bbar_s, L_s, samples, m_s, param_names,
                               n_live_points=points, sampling_efficiency=0.3, clean_files=True,
                               tag=tag, prior_name=prior_name, keep_GLmax=False,
-                              return_analysis_small=True)
+                              return_analysis_small=True, seed=seed)
 
     Bayes_factors2[i] = analysis1[0] - analysis2[0]
 
@@ -299,13 +302,13 @@ def part4():
                               N, g_s, Bbar_s, L_s, samples, m_s, param_names,
                               n_live_points=points, sampling_efficiency=0.3, clean_files=True,
                               tag=tag, prior_name=prior_name, keep_GLmax=False,
-                              return_analysis_small=True)
+                              return_analysis_small=True, seed=seed)
 
     analysis2, best_fit2 = run_pymultinest(prior_range, model2, GL_min, GL_max, n_params, directory,
                               N, g_s, Bbar_s, L_s, samples, m_s, param_names,
                               n_live_points=points, sampling_efficiency=0.3, clean_files=True,
                               tag=tag, prior_name=prior_name, keep_GLmax=False,
-                              return_analysis_small=True)
+                              return_analysis_small=True, seed=seed)
 
     Bayes_factors4[i] = analysis1[0] - analysis2[0]
 

@@ -32,7 +32,7 @@ def run_pymultinest(prior_range, model, GL_min, GL_max, n_params, directory,
                     N, g_s, Bbar_s, L_s, samples, m_s, param_names, prior_name="",
                     n_live_points=400, likelihood_kwargs={}, INS=False, clean_files=False,
                     sampling_efficiency=0.3, return_analysis_small=False, tag="",
-                    keep_GLmax=True): # Reccomended for Bayesian evidence
+                    keep_GLmax=True, seed=-1): # Reccomended for Bayesian evidence
 
   if not os.path.isdir(directory):
     os.makedirs(directory)
@@ -60,7 +60,7 @@ def run_pymultinest(prior_range, model, GL_min, GL_max, n_params, directory,
 
   pymultinest.run(likelihood_function, prior, n_params, outputfiles_basename=basename, resume=False,
                   n_live_points=n_live_points, sampling_efficiency=sampling_efficiency,
-                  evidence_tolerance=0.1, importance_nested_sampling=INS)
+                  evidence_tolerance=0.1, importance_nested_sampling=INS, seed=seed)
 
   # save parameter names
   f = open(basename + '.paramnames', 'w')
