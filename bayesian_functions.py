@@ -67,7 +67,7 @@ def run_pymultinest(prior_range, model, GL_min, GL_max, n_params, directory,
   for i in range(len(param_names)):
     f.write(f"{param_names[i]}\n")
 
-  # f.close()
+  f.close()
 
   # Save the prior ranges
   f = open(basename + '.ranges', 'w')
