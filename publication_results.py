@@ -425,12 +425,31 @@ def get_systematic_errors():
 
 
 ## Part IV: Calculating the Bayes Factor for figure 4.
-def part4():
+def get_Bayes_factors():
+  """
+    This function produces the Bayes Factors shown in the publication. Note that
+    the accuracy of the MULTINEST algorithm improves with increased points
+
+    INPUTS :
+    --------
+
+    OUTPUTS :
+    ---------
+    Bayes_factors2: The log of the Bayes factors of the Lambda_IR = g / (4 pi N)
+      model over the Lambda_IR = 1 / L model, for N = 2 data. This is an array
+      of lenght equal to the number of GL_min cuts considered, with each element
+      containin the log Bayes factor of the corresponding GL_min cut.
+
+    Bayes_factors4: The log of the Bayes factors of the Lambda_IR = g / (4 pi N)
+      model over the Lambda_IR = 1 / L model, for N = 4 data. This is an array
+      of lenght equal to the number of GL_min cuts considered, with each element
+      containin the log Bayes factor of the corresponding GL_min cut.
+  """
   GL_mins = numpy.array([0.8, 1.6, 2.4, 3.2, 4, 4.8, 6.4, 8, 9.6, 12.8, 14.4, 16, 19.2, 24, 25.6, 28.8, 32])
   GL_max = 76.8
 
   # Where the output samples will be saved
-  directory = "MULTINEST_samples"
+  directory = "MULTINEST_samples/"
 
   # How many sample points to use in the MULTINEST algorithm
   points = 1000
@@ -448,7 +467,6 @@ def part4():
   N = 2
   Bbar_1 = "0.520"
   Bbar_2 = "0.530"
-  x0 = [0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
 
   model1 = model1_1a
   model2 = model2_1a
@@ -487,6 +505,8 @@ def part4():
                               tag=tag, prior_name=prior_name, keep_GLmax=False,
                               return_analysis_small=True, seed=seed)
 
+    # This is the log of the Bayes factor equal to the difference in the
+    # log-evidence's between the two models
     Bayes_factors2[i] = analysis1[0] - analysis2[0]
 
   # N = 4
