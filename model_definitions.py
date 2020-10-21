@@ -6,40 +6,35 @@ import pdb
 import matplotlib.pyplot as plt
 from scipy.special import gammaincc
 from scanf import scanf
+import h5py
 
 
-def load_in_data(filename, GL_min=0, GL_max=numpy.inf):
-  with open(filename, 'rb') as pickle_file:
-    data = pickle.load(pickle_file, encoding='latin1')
+def load_h5_data(N_s_list, g_s_list, L_s_list, Bbar_list, GL_min=0, GL_max=numpy.inf):
+  f = h5py.File('input_data/Bindercrossings.h5', 'r')
 
-    Bbar_s = []
-    N_s = []
-    g_s = []
-    L_s = []
-    m_s = []
+  Bbar_s = []
+  N_s = []
+  g_s = []
+  L_s = []
+  m_s = []
+  samples = []
 
-    # Array to hold all of the data
-    samples = []
+  for Bbar in Bbar_list:
+    for N in N_s_list:
+      for g in g_s_list:
+        for L in L_s_list:
+          try:
+            m_s.append(f[f'N={N}'][f'g={g:.2f}'][f'L={L}'][f'Bbar={Bbar:.3f}']['central'][()])
+          except:
+            pdb.set_trace()
 
-    for key in data:
-      if key[:16] == "DBinder_crossing":
-        # print(key)
+          samples.append(f[f'N={N}'][f'g={g:.2f}'][f'L={L}'][f'Bbar={Bbar:.3f}']['bs_bins'][()])
+          N_s.append(N)
+          g_s.append(g)
+          L_s.append(L)
+          Bbar_s.append(Bbar)
 
-        # Extract the parameter values
-        Bbar, N, g, L = scanf("DBinder_crossing_B%f_%d_%f_%d", key)
-
-        Bbar_s.append(Bbar)
-        N_s.append(N)
-        g_s.append(g)
-        L_s.append(L)
-        
-        # Extract the observed mass value
-        m_s.append(data[key][4][0])
-
-        # Now extract the 500 bootstrap samples
-        samples.append(data[key][4][2])
-
-    samples = numpy.array(samples)
+  f.close()
 
   # Turn data into numpy arrays
   N_s = numpy.array(N_s)
@@ -47,6 +42,7 @@ def load_in_data(filename, GL_min=0, GL_max=numpy.inf):
   L_s = numpy.array(L_s)
   Bbar_s = numpy.array(Bbar_s)
   m_s = numpy.array(m_s)
+  samples = numpy.array(samples)
 
   # Remove nan values
   keep = numpy.logical_not(numpy.isnan(samples))[:, 0]
@@ -59,13 +55,9 @@ def load_in_data(filename, GL_min=0, GL_max=numpy.inf):
 
   GL_s = g_s * L_s
 
-  # Check that all data has the same N
-  assert len(set(N_s)) == 1
-
-  # Apply a cut to the data
   keep = numpy.logical_and(GL_s >= GL_min * (1 - 10 ** -10),
                            GL_s <= GL_max * (1 + 10 ** -10))
-
+  
   return samples[keep], g_s[keep], L_s[keep], Bbar_s[keep], m_s[keep]
 
 
