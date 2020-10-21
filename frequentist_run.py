@@ -61,8 +61,8 @@ def run_frequentist_analysis(model, N, Bbar_1, Bbar_2, GL_min, GL_max, param_nam
   return p, res.x, dof
 
 
-def run_frequentist_analysis(model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, method="BFGS", no_samples=500, run_bootstrap=True, print_info=True):
-  samples, g_s, L_s, Bbar_s, m_s = load_h5_data(N_s, g_s, L_s, Bbar_s, GL_min, GL_max)
+def run_frequentist_analysis(input_h5_file, model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, method="BFGS", no_samples=500, run_bootstrap=True, print_info=True):
+  samples, g_s, L_s, Bbar_s, m_s = load_h5_data(input_h5_file, N_s, g_s, L_s, Bbar_s, GL_min, GL_max)
 
   cov_matrix, different_ensemble = cov_matrix_calc(g_s, L_s, m_s, samples)
   cov_1_2 = numpy.linalg.cholesky(cov_matrix)

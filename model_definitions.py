@@ -9,8 +9,8 @@ from scanf import scanf
 import h5py
 
 
-def load_h5_data(N_s_list, g_s_list, L_s_list, Bbar_list, GL_min=0, GL_max=numpy.inf):
-  f = h5py.File('input_data/Bindercrossings.h5', 'r')
+def load_h5_data(filename, N_s_list, g_s_list, L_s_list, Bbar_list, GL_min=0, GL_max=numpy.inf):
+  f = h5py.File(filename, 'r')
 
   Bbar_s = []
   N_s = []
@@ -26,7 +26,8 @@ def load_h5_data(N_s_list, g_s_list, L_s_list, Bbar_list, GL_min=0, GL_max=numpy
           try:
             m_s.append(f[f'N={N}'][f'g={g:.2f}'][f'L={L}'][f'Bbar={Bbar:.3f}']['central'][()])
           except:
-            pdb.set_trace()
+            print(f"WARNING: CONFIGURATION MISSING: N={N}, g={g:.2f}, L={L}, Bbar={Bbar:.3f}")
+            continue
 
           samples.append(f[f'N={N}'][f'g={g:.2f}'][f'L={L}'][f'Bbar={Bbar:.3f}']['bs_bins'][()])
           N_s.append(N)
