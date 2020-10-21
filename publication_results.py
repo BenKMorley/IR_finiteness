@@ -1,7 +1,7 @@
 from frequentist_run import run_frequentist_analysis
 from model_definitions import *
 from tqdm import tqdm
-from bayesian_functions import *
+# from bayesian_functions import *
 
 
 def get_pvalues_central_fit():
@@ -24,15 +24,17 @@ def get_pvalues_central_fit():
       N = 4 analysis. Each array is of the length of the number of GL_min cut
       values, and the corresponding p-value to each cut is recorded. The first
       array is for the Lambda_IR = g / (4 pi N) model, while the second is for
-      Lambda_IR = 1 / L      
+      Lambda_IR = 1 / L
   """
   GL_mins = numpy.array([0.8, 1.6, 2.4, 3.2, 4, 4.8, 6.4, 8, 9.6, 12.8, 14.4, 16, 19.2, 24, 25.6, 28.8, 32])
   GL_max = 76.8
 
   # N = 2
-  N = 2
-  Bbar_1 = "0.520"
-  Bbar_2 = "0.530"
+  N_s = [2]
+  Bbar_s = [0.52, 0.53]
+  g_s = [0.1, 0.2, 0.3, 0.5, 0.6]
+  L_s = [8, 16, 32, 48, 64, 96, 128]
+
   x0 = [0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
 
   model1 = model1_1a
@@ -43,15 +45,17 @@ def get_pvalues_central_fit():
   pvalues_2 = numpy.zeros(len(GL_mins))
 
   for i, GL_min in enumerate(GL_mins):
-    pvalues_1[i], params1, dof = run_frequentist_analysis(model1, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False)
-    pvalues_2[i], params2, dof = run_frequentist_analysis(model2, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False)
+    pvalues_1[i], params1, dof = run_frequentist_analysis(model1, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
+    pvalues_2[i], params2, dof = run_frequentist_analysis(model2, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
 
   pvalues_N2 = [pvalues_1, pvalues_2]
 
   # N = 4
-  N = 4
-  Bbar_1 = "0.420"
-  Bbar_2 = "0.430"
+  N_s = [4]
+  Bbar_s = [0.42, 0.43]
+  g_s = [0.1, 0.2, 0.3, 0.5, 0.6]
+  L_s = [8, 16, 32, 48, 64, 96, 128]
+
   x0 = [0, 0, 0.4459, -0.02707, 1, 2 / 3] # EFT values
 
   model1 = model1_2a
@@ -62,13 +66,12 @@ def get_pvalues_central_fit():
   pvalues_2 = numpy.zeros(len(GL_mins))
 
   for i, GL_min in enumerate(GL_mins):
-    pvalues_1[i], params1, dof = run_frequentist_analysis(model1, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False)
-    pvalues_2[i], params2, dof = run_frequentist_analysis(model2, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False)
+    pvalues_1[i], params1, dof = run_frequentist_analysis(model1, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
+    pvalues_2[i], params2, dof = run_frequentist_analysis(model2, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
 
   pvalues_N4 = [pvalues_1, pvalues_2]
 
   return pvalues_N2, pvalues_N4
-
 
 
 def get_statistical_errors_central_fit():
@@ -99,6 +102,10 @@ def get_statistical_errors_central_fit():
   # N = 2
   model = model1_1a
   N = 2
+  N_s = [N]
+  Bbar_s = [0.52, 0.53]
+  g_s = [0.1, 0.2, 0.3, 0.5, 0.6]
+  L_s = [8, 16, 32, 48, 64, 96, 128]
   GL_min = 12.8
   GL_max = 76.8
 
@@ -108,10 +115,10 @@ def get_statistical_errors_central_fit():
   param_names = ["alpha", "f0", "f1", "lambduh", "nu"]
 
   # Run once with the full dataset (no resampling)
-  pvalue, params, dof, sigmas = run_frequentist_analysis(model, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False)
+  pvalue, params, dof = run_frequentist_analysis(model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
 
   # Run with all the bootstrap samples
-  pvalue_boot, params_boot, dof_boot, sigmas_boot = run_frequentist_analysis(model, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0)
+  pvalue, params, dof, sigmas = run_frequentist_analysis(model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0)
 
   # Calculate the value of the non-perterbative critical mass for g = 0.1 and it's
   # statistical error
@@ -135,21 +142,23 @@ def get_statistical_errors_central_fit():
   results_N2 = [params, numpy.std(params_boot), m_c, m_c_error]
   
   # N = 4
-  model = model1_1a
+  model = model1_2a
   N = 4
+  N_s = [N]
+  Bbar_s = [0.42, 0.43]
+  g_s = [0.1, 0.2, 0.3, 0.5, 0.6]
+  L_s = [8, 16, 32, 48, 64, 96, 128]
   GL_min = 12.8
   GL_max = 76.8
 
-  Bbar_1 = "0.520"
-  Bbar_2 = "0.530"
-  x0 = [0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
+  x0 = [0, 0, 0.4459, -0.02707, 1, 2 / 3] # EFT values
   param_names = ["alpha1", "alpha2" "f0", "f1", "lambduh", "nu"]
 
   # Run once with the full dataset (no resampling)
-  pvalue, params, dof, sigmas = run_frequentist_analysis(model, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False)
+  pvalue, params, dof = run_frequentist_analysis(model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
 
   # Run with all the bootstrap samples
-  pvalue_boot, params_boot, dof_boot, sigmas_boot = run_frequentist_analysis(model, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0)
+  pvalue, params, dof, sigmas = run_frequentist_analysis(model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0)
 
   # Calculate the value of the non-perterbative critical mass for g = 0.1 and it's
   # statistical error. Calculate twice, once for each alpha
@@ -191,7 +200,6 @@ def get_statistical_errors_central_fit():
   return results_N2, results_N4
 
 
-
 def get_systematic_errors():
   """
     This function gets the systematic error bands (and central fit values)
@@ -220,7 +228,19 @@ def get_systematic_errors():
   GL_mins = numpy.array([0.8, 1.6, 2.4, 3.2, 4, 4.8, 6.4, 8, 9.6, 12.8, 14.4, 16, 19.2, 24, 25.6, 28.8, 32])
   GL_max = 76.8
 
-  # N = 2
+  # N = 2
+  model = model1_1a
+  N = 2
+  N_s = [N]
+  Bbar_s = [0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59]
+  g_s = [0.1, 0.2, 0.3, 0.5, 0.6]
+  L_s = [8, 16, 32, 48, 64, 96, 128]
+  GL_min = 12.8
+  GL_max = 76.8
+
+  x0 = [0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
+  param_names = ["alpha", "f0", "f1", "lambduh", "nu"]
+
   N = 2
   model = model1_1a
   min_dof = 15 # The minimum number of degrees of freedom needed to consider a fit valid
@@ -228,7 +248,6 @@ def get_systematic_errors():
   x0 = [0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
   param_names = ["alpha", "f0", "f1", "lambduh", "nu"]
   n_params = len(param_names)
-  Bbar_s = ["0.510", "0.520", "0.530", "0.540", "0.550", "0.560", "0.570", "0.580", "0.590"]
 
   # Make a list of all Bbar pairs
   Bbar_list = []
@@ -245,7 +264,7 @@ def get_systematic_errors():
     print(f"Running fits with Bbar_1 = {Bbar_1}, Bbar_2 = {Bbar_2}")
 
     for j, GL_min in enumerate(GL_mins):
-      pvalues[i, j], params[i, j], dofs[i, j] = run_frequentist_analysis(model, N, Bbar_1, Bbar_2, GL_min, GL_max, param_names, x0, run_bootstrap=False, print_info=False)
+      pvalues[i, j], params[i, j], dofs[i, j] = 
 
   # Extract the index of the smallest GL_min fit that has an acceptable p-value
   r = len(GL_mins)
@@ -311,8 +330,18 @@ def get_systematic_errors():
   results_N2 = [params_central, sys_sigma, m_c, m_c_error]
 
   # N = 4
-  N = 4
   model = model1_2a
+  N = 4
+  N_s = [N]
+  Bbar_s = [0.42, 0.43]
+  g_s = [0.1, 0.2, 0.3, 0.5, 0.6]
+  L_s = [8, 16, 32, 48, 64, 96, 128]
+  GL_min = 12.8
+  GL_max = 76.8
+
+  x0 = [0, 0, 0.4459, -0.02707, 1, 2 / 3] # EFT values
+  param_names = ["alpha1", "alpha2" "f0", "f1", "lambduh", "nu"]
+  
   min_dof = 15 # The minimum number of degrees of freedom needed to consider a fit valid
 
   x0 = [0, 0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
@@ -558,4 +587,6 @@ def get_Bayes_factors():
   return Bayes_factors2, Bayes_factors4
 
 
-Bayes_factors2, Bayes_factors4 = part4()
+# pvalues_N2, pvalues_N4 = get_pvalues_central_fit()
+results_N2, results_N4 = get_statistical_errors_central_fit()
+
