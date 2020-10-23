@@ -142,7 +142,7 @@ def get_statistical_errors_central_fit():
   m_c_error = max(m_c - minimum_m, maximum_m - m_c)
   print(f"m_c_error = {m_c_error}")
 
-  results_N2 = [params_central, numpy.std(params), m_c, m_c_error]
+  results_N2 = [params_central, numpy.std(params, axis=0), m_c, m_c_error]
   
   # N = 4
   model = model1_2a
@@ -155,7 +155,7 @@ def get_statistical_errors_central_fit():
   GL_max = 76.8
 
   x0 = [0, 0, 0.4459, -0.02707, 1, 2 / 3] # EFT values
-  param_names = ["alpha1", "alpha2" "f0", "f1", "lambduh", "nu"]
+  param_names = ["alpha1", "alpha2", "f0", "f1", "lambduh", "nu"]
 
   # Run once with the full dataset (no resampling)
   pvalue, params_central, dof = run_frequentist_analysis(h5_data_file, model, N_s, g_s, L_s, Bbar_s, GL_min, GL_max, param_names, x0, run_bootstrap=False)
@@ -196,7 +196,7 @@ def get_statistical_errors_central_fit():
   m_c2_error = max(m_c2 - minimum_m, maximum_m - m_c2)
   print(f"m_c2_error = {m_c2_error}")
 
-  results_N4 = [params_central, numpy.std(params), m_c1, m_c1_error, m_c2, m_c2_error]
+  results_N4 = [params_central, numpy.std(params, axis=0), m_c1, m_c1_error, m_c2, m_c2_error]
 
   return results_N2, results_N4
 
@@ -336,12 +336,8 @@ def get_systematic_errors():
   GL_max = 76.8
 
   x0 = [0, 0, 0.4459, -0.02707, 1, 2 / 3] # EFT values
-  param_names = ["alpha1", "alpha2" "f0", "f1", "lambduh", "nu"]
-  
-  min_dof = 15 # The minimum number of degrees of freedom needed to consider a fit valid
-
-  x0 = [0, 0, 0.5431, -0.03586, 1, 2 / 3] # EFT values
   param_names = ["alpha1", "alpha2", "f0", "f1", "lambduh", "nu"]
+  min_dof = 15 # The minimum number of degrees of freedom needed to consider a fit valid
   n_params = len(param_names)
   Bbar_s = [0.42, 0.43, 0.44, 0.45, 0.46, 0.47]
 
@@ -399,7 +395,7 @@ def get_systematic_errors():
     # fit by an acceptable fit
     sys_sigmas[i] = max(maximum - params[best_Bbar_index, best, i], params[best_Bbar_index, best, i] - minimum)
 
-    print(f"{param} = {param} +- {sys_sigmas[i]}")
+    print(f"{param} = {params[best_Bbar_index, best, i]} +- {sys_sigmas[i]}")
 
   # Find the systematic variation in the critical mass
   g = 0.1
@@ -474,7 +470,7 @@ def get_Bayes_factors():
   directory = "MULTINEST_samples/"
 
   # How many sample points to use in the MULTINEST algorithm
-  points = 100
+  points = 200
 
   # Use this to label different runs if you edit something
   tag = ""
@@ -592,7 +588,8 @@ def get_Bayes_factors():
   return Bayes_factors2, Bayes_factors4
 
 
-# pvalues_N2, pvalues_N4 = get_pvalues_central_fit()
-# results_N2, results_N4 = get_statistical_errors_central_fit()
-# results_N2, results_N4 = get_systematic_errors()
-# Bayes_factors2, Bayes_factors4 = get_Bayes_factors()
+if __name__ == "__main__":
+  # pvalues_N2, pvalues_N4 = get_pvalues_central_fit()
+  # results_N2, results_N4 = get_statistical_errors_central_fit()
+  results_N2, results_N4 = get_systematic_errors()
+  # Bayes_factors2, Bayes_factors4 = get_Bayes_factors()
